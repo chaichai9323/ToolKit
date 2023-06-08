@@ -18,17 +18,33 @@ if [[ `cat Podfile` =~ "$comstr" ]]; then
 	exit 0
 fi
 
-line=""
-for f in `find . -name "Podfile"`; do
-  for row in `grep -n -E "\btarget\b\s+\S+\s+do\S{0}$" $f | cut -f1 -d:`; do
-   		line=$row
-   		break;
-  done 
-done
+function projName(){
+  path=$(find . -maxdepth 1 -name "*.xcodeproj")
+  file=${path##*/}
+  n=${file%.*}  
+  echo $n"sss"
+}
 
-if [[ ${#line} < 1 ]]; then
-	echo -e "\033[31m没有在Podfile文件中查找到 target 'oog' do 这样的内容，请检查Podfile文件内容 \033[0m"
-	exit 0
+function seedTargetRow() {
+  n=$@
+  res=""
+  for i in `grep -n -E "\btarget\b\s+\S{1}$n\S{1}\s+do\S{0}$" Podfile | cut -f1 -d:`; do
+    res=$i
+    break
+  done
+  echo $res
+}
+
+
+line=$(seedTargetRow $(projName))
+
+if [[ $line < 1 ]]; then
+  line=$(seedTargetRow '\S+')  
+fi
+
+if [[ $line < 1 ]]; then
+	echo -e "\033[31m没有在Podfile文件中查找到 target 'oog' do 这样的内容，请检查Podfile文件内容 \033[0m";
+  exit 0
 fi
 
 sed -i "" $line"a \\
