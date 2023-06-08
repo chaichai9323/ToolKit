@@ -14,7 +14,7 @@ fi
 
 comstr="if File.exist?('./AppStoreEnv.rb');eval File.read('./$file');end"
 if [[ `cat Podfile` =~ "$comstr" ]]; then
-	echo "\033[32m工程环境配置完成\033[0m"
+	echo -e "\033[32m工程环境配置完成\033[0m"
 	exit 0
 fi
 
