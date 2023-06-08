@@ -4,7 +4,7 @@ file=AppStoreEnv.rb
 
 if [ ! -f "$file" ]; then
 	url=https://raw.githubusercontent.com/chaichai9323/ToolKit/main/AppStoreEnv.rb
-	curl ${url} -o $file
+	curl -fsSL ${url} -o $file
 fi
 
 if [ ! -f "$file" ]; then
