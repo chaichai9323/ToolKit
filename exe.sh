@@ -8,7 +8,7 @@ if [ ! -f "$file" ]; then
 fi
 
 if [ ! -f "$file" ]; then
-	echo "\033[31m执行脚本出错了，请检查网络，然后重新执行\033[0m"; exit 0
+	echo -e "\033[31m执行脚本出错了，请检查网络，然后重新执行\033[0m"; exit 0
 fi
 
 
@@ -24,7 +24,7 @@ for f in `find . -name "Podfile"`; do
 done
 
 if [[ ${#line} < 1 ]]; then
-	echo "\033[31m没有在Podfile文件中查找到 target 'oog' do 这样的内容，请检查Podfile文件内容 \033[0m"
+	echo -e "\033[31m没有在Podfile文件中查找到 target 'oog' do 这样的内容，请检查Podfile文件内容 \033[0m"
 	exit 0
 fi
 
@@ -32,4 +32,4 @@ sed -i "" $line"a \\
   $comstr
 " Podfile
 
-echo "\033[32m工程环境配置完成\033[0m"
+echo -e "\033[32m工程环境配置完成\033[0m"
