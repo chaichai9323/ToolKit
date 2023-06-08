@@ -20,7 +20,10 @@ fi
 
 line=""
 for f in `find . -name "Podfile"`; do
-  line=`grep -n -E "\btarget\b\s+\S+\s+do\S{0}$" $f | cut -f1 -d:`
+  for row in `grep -n -E "\btarget\b\s+\S+\s+do\S{0}$" $f | cut -f1 -d:`; do
+   		line=$row
+   		break;
+  done 
 done
 
 if [[ ${#line} < 1 ]]; then
