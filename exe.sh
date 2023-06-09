@@ -65,14 +65,17 @@ post_integrate do |installer|
       if "#{fold}".downcase.end_with?(".debug.xcconfig")
         condition = "DevelopEnv"
       end
-      content = File.read("#{fold}").gsub!(/(SWIFT_ACTIVE_COMPILATION_CONDITIONS){1}\W*=/,"\\1 = $(inherited) #{condition} ")
-      if content == nil
-        str = "SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) #{condition}"
-        File.open("#{fold}", "a") do |file|
-          file.write(str)
+      txt = File.read("#{fold}").gsub!(/SWIFT_ACTIVE_COMPILATION_CONDITIONS\W*=[\s\S]*#{condition}/,"")
+      if txt == nil  
+        content = File.read("#{fold}").gsub!(/(SWIFT_ACTIVE_COMPILATION_CONDITIONS){1}\W*=/,"\\1 = $(inherited) #{condition} ")
+        if content == nil
+          str = "SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) #{condition}"
+          File.open("#{fold}", "a") do |file|
+            file.write(str)
+          end
+        else
+          File.write("#{fold}", content)    
         end
-      else
-        File.write("#{fold}", content)    
       end
     end
   end
