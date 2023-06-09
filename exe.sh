@@ -51,16 +51,17 @@ script_phase :name => 'verifyAppStoreEnv', :script => "#{script}", :execution_po
 script_phase :name => 'verifyGoogleInfo', :script => "#{script2}", :execution_position => :after_compile
 
 branchName = `git rev-parse --abbrev-ref HEAD`.gsub(/\s+/, '')
-condition = ""
+configEnv = ""
 if branchName == "master" || branchName == "main"
-  condition = "AppStoreEnv"
+  configEnv = "AppStoreEnv"
 else
-  condition = "DevelopEnv"
+  configEnv = "DevelopEnv"
 end
 
 post_integrate do |installer|
   installer.generated_aggregate_targets.each do |target|
     Dir.glob("Pods/**/*#{target.name}*.xcconfig").each do | fold |
+      condition = configEnv
       if "#{fold}".downcase.end_with?(".debug.xcconfig")
         condition = "DevelopEnv"
       end
