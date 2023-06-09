@@ -13,7 +13,8 @@ if [ $branchName == master ] || [ $branchName == main ]; then
 else
     echo "当前在[$branchName]分支"
 fi
-if [ $productBranch == true ]; then
+cfg=$(echo $CONFIGURATION | tr [A-Z] [a-z])
+if [ $productBranch == true ] && [ $cfg == release ]; then
     echo "准备开始校验环境"
     if [[ $SWIFT_ACTIVE_COMPILATION_CONDITIONS =~ "AppStoreEnv" ]]; then
         echo "校验环境通过"
@@ -34,7 +35,8 @@ for f in `find $SRCROOT -name "GoogleService-Info*.plist"`; do
   fi
 done
 branchName=`git rev-parse --abbrev-ref HEAD`
-if [ $branchName == master ] || [ $branchName == main ]; then
+cfg=$(echo $CONFIGURATION | tr [A-Z] [a-z])
+if ([ $branchName == master ] || [ $branchName == main ]) && [ $cfk == release ]; then
   if [[ ${#googlepath} > 0 ]]; then
     echo "找到正式服:"$googlepath
     dstPath=$TARGET_BUILD_DIR/$TARGET_NAME.app/GoogleService-Info.plist
