@@ -59,6 +59,9 @@ end
 post_integrate do |installer|
   installer.generated_aggregate_targets.each do |target|
     Dir.glob("Pods/**/*#{target.name}*.xcconfig").each do | fold |
+      if "#{fold}".downcase.end_with?(".debug.xcconfig")
+        condition = "DevelopEnv"
+      end
       content = File.read("#{fold}").gsub!(/(SWIFT_ACTIVE_COMPILATION_CONDITIONS){1}\W*=/,"\\1 = $(inherited) #{condition} ")
       if content == nil
         str = "SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) #{condition}"
