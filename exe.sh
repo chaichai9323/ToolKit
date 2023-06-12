@@ -92,7 +92,7 @@ function projName(){
   path=$(find . -maxdepth 1 -name "*.xcodeproj")
   file=${path##*/}
   n=${file%.*}  
-  echo $n"sss"
+  echo $n
 }
 
 function seedTargetRow() {
