@@ -19,13 +19,18 @@
 使用方法：
 
 var apiURL: String {
+
 #if AppStoreEnv//线上环境
+
     "http://18.217.239.18"
+    
 #else//开发环境
-    #if DEBUG//debug模式
+
+    #if DEBUG//debug模式    
         "http://18.217.239.18"
     #else//release模式
         "http://18.217.239.18"
     #endif
 #endif
+
 }
