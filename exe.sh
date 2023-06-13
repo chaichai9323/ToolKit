@@ -1,5 +1,22 @@
 #!/bin/bash
 
+function checkActive() {
+  path=$(find . -maxdepth 1 -name "*.xcodeproj")/project.pbxproj
+  res=true
+  for i in `grep -E '\bSWIFT_ACTIVE_COMPILATION_CONDITIONS\b' $path | cut -f2 -d=`; do
+    if [[ ! $i =~ DEBUG.* ]]; then
+      res=false
+      break
+    fi
+  done 
+  echo $res
+}
+
+if [[ $(checkActive) == false ]]; then
+  echo -e "\033[31m检查一下target工程配置的 active compilation conditions,有手动配置，非必要请删除，必须配置的话请配置在工程配置，不要直接配置target \033[0m"
+  exit 0
+fi
+
 file=AppStoreEnv.rb
 
 cat > ${file} <<- 'EOF'
@@ -22,7 +39,13 @@ if [ $productBranch == true ] && [ $cfg == release ]; then
         echo "error:校验环境不通过，请检查配置"
         exit 1
     fi
-fi'
+else
+  if [[ $SWIFT_ACTIVE_COMPILATION_CONDITIONS =~ "AppStoreEnv" ]]; then
+      echo "error:开发环境不能配置AppStoreEnv，检查一下是否执行 pod install"
+      exit 1
+  fi
+fi
+'
 
 script2='googlepath=""
 for f in `find $SRCROOT -name "GoogleService-Info*.plist"`; do
