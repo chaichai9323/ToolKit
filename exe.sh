@@ -36,12 +36,12 @@ if [ $productBranch == true ] && [ $cfg == release ]; then
     if [[ $SWIFT_ACTIVE_COMPILATION_CONDITIONS =~ "AppStoreEnv" ]]; then
         echo "校验环境通过"
     else
-        echo "error:校验环境不通过，请检查配置"
+        echo "error: 校验环境不通过，请检查配置"
         exit 1
     fi
 else
   if [[ $SWIFT_ACTIVE_COMPILATION_CONDITIONS =~ "AppStoreEnv" ]]; then
-      echo "error:开发环境不能配置AppStoreEnv，检查一下是否执行 pod install"
+      echo "error: 开发环境不能配置AppStoreEnv，检查一下是否执行 pod install"
       exit 1
   fi
 fi
@@ -65,7 +65,7 @@ if ([ $branchName == master ] || [ $branchName == main ]) && [ $cfg == release ]
     dstPath=$TARGET_BUILD_DIR/$TARGET_NAME.app/GoogleService-Info.plist
     cp -f $googlepath $dstPath
   else
-    echo "error:没有找到正式服GoogleInfo"
+    echo "error: 没有找到正式服GoogleInfo"
     exit 1
   fi
 fi
